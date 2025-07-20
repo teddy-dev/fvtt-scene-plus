@@ -1,0 +1,39 @@
+{
+  "id": "scene-plus",
+  "title": "Scene+",
+  "version": "0.5.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "description": "<p>A simple module that uses Tagger and Portal to keep track of player's movements through self-navigating scene changes.</p>",
+  "authors": [
+    {
+      "name": "Teddy",
+      "url": "https://www.teddy.moe",
+      "discord": "@teddy",
+      "flags": {}
+    }
+  ],
+  "flags": {
+    "canUpload": true
+  },
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "tagger",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "portal-lib",
+        "type": "module",
+        "compatibility": {}
+      }
+    ]
+  }
+}
