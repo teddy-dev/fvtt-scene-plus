@@ -17,7 +17,7 @@ When you have scenes that are setup so that players can move themselves between 
 ```JavaScript
   game.socket.emit("pullToScene", game.user.character.getFlag("scene-plus", "lastScene"), game.user.id);
 ```
-You will still need to setup the moving between scenes, you can do this via Foundry's reigons, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or something like [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
+When a token moves onto a new scene with a spawner, if their token isn't already on the scene, they will be spawned near the `Spawner` tile. This should be the entrance to your scene. You will still need to setup the moving between scenes, you can do this via Foundry's reigons, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or something like [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
 
 Further, for best results you will want to delete the player token when they are moving off a scene onto another one. MAT can handle this easily (and I believe Stairways does too, but don't quote me on that!), however, with reigons you will need a macro like this:
 ```JavaScript
