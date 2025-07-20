@@ -35,5 +35,8 @@
         "compatibility": {}
       }
     ]
-  }
+  },
+  "url": "https://github.com/teddy-dev/fvtt-scene-plus",
+  "manifest": "https://raw.githubusercontent.com/teddy-dev/fvtt-scene-plus/refs/heads/main/module.json",
+  "download": "https://github.com/teddy-dev/fvtt-scene-plus/raw/refs/heads/main/module.zip"
 }
