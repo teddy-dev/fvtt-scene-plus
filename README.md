@@ -5,7 +5,8 @@ When you have scenes that are setup so that players can move themselves between 
 
 ### Required Plugins 
 [Tagger](https://foundryvtt.com/packages/tagger)  
-[Portal Lib](https://foundryvtt.com/packages/portal-lib)
+[Portal Lib](https://foundryvtt.com/packages/portal-lib)  
+[Socketlib](https://foundryvtt.com/packages/socketlib)
 
 ### How it works
 1. Create a tile on a scene and with Tagger, add the tag `Spawner` (this can be changed in settings)
