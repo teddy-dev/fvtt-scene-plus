@@ -1,7 +1,7 @@
 {
   "id": "scene-plus",
   "title": "Scene+",
-  "version": "0.5.1",
+  "version": "0.5.3",
   "compatibility": {
     "minimum": "12",
     "verified": "13",

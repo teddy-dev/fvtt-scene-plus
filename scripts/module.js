@@ -1,5 +1,4 @@
 let scenePlusSpawnerReady = false;
-
 let socket;
 
 Hooks.once("socketlib.ready", () => {
@@ -10,22 +9,30 @@ Hooks.once("socketlib.ready", () => {
 Hooks.once('init', async function() {
     game.settings.register("scene-plus", "sceneSpawnerTag", {
         name: "Spawner Tag",
-        hint: "The name of the Tag used for Spawner tiles.",
+        hint: "Tag used to designate where to spawn tokens.",
         scope: "world",
         config: true,
         type: String,
         default: "Spawner"
     });
-    game.settings.register("scene-plus", "sceneRecenterOnLoad", {
-        name: "Recenter On Load",
-        hint: "Pan the canvas to your token after loading.",
+    game.settings.register("scene-plus", "sceneSaveTag", {
+        name: "Save Scene Tag",
+        hint: "Tag used to designate a save-only tile.\nNote: This will not spawn tokens. Use this for teleporters.",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "SaveScene"
+    });
+    game.settings.register("scene-plus", "sceneTokenFocus", {
+        name: "Focus Token",
+        hint: "Focus on my token after restored or teleported.\nNote: May not work on all scenes!",
         scope: "client",
         config: true,
         type: Boolean,
-        default: false
+        default: true
     });
     window.scenePlus = {
-    restorePlayerToScene: function(userid) {
+    restorePlayerToScene: async (userid) => {
             socket.executeAsGM("restorePlayerToScene", userid);
         }
     }
@@ -45,20 +52,28 @@ Hooks.once('ready', async function() {
 Hooks.on('canvasReady', async function() {
     if (!scenePlusSpawnerReady) return;
     const spawner = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSpawnerTag"))[0];
-    if (spawner) {
-        const character = game.user.character.name;
+    const saveScene = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSaveTag"))[0];
+    const character = game.user.character.name;
         const all = await canvas.tokens;
         const token = await all.objects.children.find(c => c.document.name === character);
+    if (spawner) {
         if (!token) {
             const portal = new Portal();
             portal.addCreature(character, { count: 1 });
             portal.setLocation({ x: spawner.x, y: spawner.y });
             await portal.spawn();
         }
+        focusOnToken(token);
         game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
-        if (game.settings.get("scene-plus", "sceneRecenterOnLoad")) {
-            await canvas.recenter();
-        }
+    } else if (saveScene) {
+        if (token) focusOnToken(token);
+        game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
     }
     return;
 });
+
+function focusOnToken(token) {
+    if (game.settings.get("scene-plus", "sceneTokenFocus")) {
+        canvas.animatePan({ x: token.center.x, y: token.center.y, scale: canvas.stage.scale.x });
+    }
+}
