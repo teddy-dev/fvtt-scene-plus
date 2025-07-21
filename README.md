@@ -13,11 +13,11 @@ When you have scenes that are setup so that players can move themselves between 
 ```JavaScript
    game.user.character.getFlag("scene-plus", "lastScene")
 ```
-4. You can use a Macro like this to restore the player to the scene:
+4. A client macro can be used to restore the user to their last scene.
 ```JavaScript
-  game.socket.emit("pullToScene", game.user.character.getFlag("scene-plus", "lastScene"), game.user.id);
+  window.scenePlus.restorePlayerToScene(game.user.id)
 ```
-When a token moves onto a new scene with a spawner, if their token isn't already on the scene, they will be spawned near the `Spawner` tile. This should be the entrance to your scene. You will still need to setup how the players move between scenes. You can do this with Foundry's reigons executing a macro/script, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
+When a token moves onto a new scene with a spawner, if their token isn't already on the scene, they will be spawned near the `Spawner` tile. This should be the entrance to your scene. You will still need to setup how the players move between scenes. You can do this with Foundry's Scene Regions, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
 
 For the best results, you will want to delete the player token when they are moving off a scene and onto another. MAT can handle this easily (and I believe Stairways does too, but don't quote me on that!).
 
