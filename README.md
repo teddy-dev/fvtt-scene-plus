@@ -17,16 +17,16 @@ When you have scenes that are setup so that players can move themselves between 
 ```JavaScript
   game.socket.emit("pullToScene", game.user.character.getFlag("scene-plus", "lastScene"), game.user.id);
 ```
-When a token moves onto a new scene with a spawner, if their token isn't already on the scene, they will be spawned near the `Spawner` tile. This should be the entrance to your scene. You will still need to setup the moving between scenes, you can do this via Foundry's reigons, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or something like [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
+When a token moves onto a new scene with a spawner, if their token isn't already on the scene, they will be spawned near the `Spawner` tile. This should be the entrance to your scene. You will still need to setup how the players move between scenes. You can do this with Foundry's reigons executing a macro/script, [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
 
-Further, for best results you will want to delete the player token when they are moving off a scene onto another one. MAT can handle this easily (and I believe Stairways does too, but don't quote me on that!), however, with reigons you will need a macro like this:
+For the best results, you will want to delete the player token when they are moving off a scene and onto another. MAT can handle this easily (and I believe Stairways does too, but don't quote me on that!), however, with reigons you will need a macro like this:
 ```JavaScript
 const tokens = await canvas.tokens;
 const token = tokens.objects.children.find(c => c.document.name === game.user.character.name);
 if (token) await token.document.delete();
 game.socket.emit("pullToScene", "(YOUR SCENE ID HERE)", game.user.id);
 ```
-You can easily grab a scene id by opening its configuration, and clicking the "Copy Document UUID." Be sure to remove the `Scene.` or it will not work correctly.
+You can easily grab a scene's ID by opening its configuration, and clicking the "Copy Document UUID." Be sure to remove the `Scene.` from the ID or it will not work correctly. For the power user: typing `canvas.scene.id` into your browser's console will also return only the ID needed.
 
 ---
 
