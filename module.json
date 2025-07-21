@@ -1,7 +1,7 @@
 {
   "id": "scene-plus",
   "title": "Scene+",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "compatibility": {
     "minimum": "12",
     "verified": "13",
@@ -16,6 +16,7 @@
       "flags": {}
     }
   ],
+  "socket": true,
   "flags": {
     "canUpload": true
   },
@@ -31,6 +32,11 @@
       },
       {
         "id": "portal-lib",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "",
         "type": "module",
         "compatibility": {}
       }
