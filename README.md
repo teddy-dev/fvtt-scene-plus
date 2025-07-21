@@ -26,7 +26,7 @@ const token = tokens.objects.children.find(c => c.document.name === game.user.ch
 if (token) await token.document.delete();
 game.socket.emit("pullToScene", "(YOUR SCENE ID HERE)", game.user.id);
 ```
-You can easily grab a scene's ID by opening its configuration, and clicking the "Copy Document UUID." Be sure to remove the `Scene.` from the ID or it will not work correctly. For the power user: typing `canvas.scene.id` into your browser's console will also return only the ID needed.
+You can easily grab a scene's ID by opening its configuration, and clicking "Copy Document UUID" in the title bar (next to the close button!) Be sure to remove the `Scene.` from the ID or it will not work correctly. For the power user: typing `canvas.scene.id` into your browser's console will also return only the ID needed.
 
 ---
 
