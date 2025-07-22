@@ -8,6 +8,10 @@ When you have multiple scenes that are designed so your players can freely move 
 [Portal Lib](https://foundryvtt.com/packages/portal-lib)  
 [Socketlib](https://foundryvtt.com/packages/socketlib)
 
+### Systems
+
+Should work with all game systems...probably.
+
 ### How it works
 1. Create a tile on a scene and with Tagger, add the tag `Spawner` or `SaveScene` (this can be changed in settings)
 - `Spawner` will create a new token if a character's token does not already exist in this scene and save the scene to the character. Use this when you have something like MATT simply changing the scene.
