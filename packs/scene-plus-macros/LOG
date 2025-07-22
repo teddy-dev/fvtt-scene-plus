@@ -1,0 +1,5 @@
+2025/07/22-09:25:37.280502 7fcf167bd700 Delete type=3 #1
+2025/07/22-09:28:41.869746 7fcf151ea700 Level-0 table #5: started
+2025/07/22-09:28:41.871347 7fcf151ea700 Level-0 table #5: 782 bytes OK
+2025/07/22-09:28:41.872640 7fcf151ea700 Delete type=0 #3
+2025/07/22-09:28:41.876024 7fcf151ea700 Manual compaction at level-0 from '!macros!0XUFab9LcA7qamb9' @ 72057594037927935 : 1 .. '!macros!sDkuyxgtQbANLLBN' @ 0 : 0; will stop at (end)

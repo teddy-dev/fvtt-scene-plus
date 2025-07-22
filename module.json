@@ -1,7 +1,7 @@
 {
   "id": "scene-plus",
   "title": "Scene+",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "compatibility": {
     "minimum": "12",
     "verified": "13",
@@ -44,5 +44,17 @@
   },
   "url": "https://github.com/teddy-dev/fvtt-scene-plus",
   "manifest": "https://raw.githubusercontent.com/teddy-dev/fvtt-scene-plus/refs/heads/main/module.json",
-  "download": "https://github.com/teddy-dev/fvtt-scene-plus/raw/refs/heads/main/module.zip"
+  "download": "https://github.com/teddy-dev/fvtt-scene-plus/raw/refs/heads/main/module.zip",
+  "packs": [
+    {
+      "name": "scene-plus-macros",
+      "label": "Scene+ Macros",
+      "path": "packs/scene-plus-macros",
+      "type": "Macro",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ]
 }
