@@ -24,9 +24,25 @@ Hooks.once('init', async function() {
         type: String,
         default: "SaveScene"
     });
+    game.settings.register("scene-plus", "saveAllScenes", {
+        name: "Save all Scenes",
+        hint: "Save all scenes regardless if a tag is set or not.\nNote: Spawner tag will still take priority if set.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false
+    });
+    game.settings.register("scene-plus", "autoReturnUser", {
+        name: "Automatically Return to Scene",
+        hint: "Automatically return to the last scene on game load.",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: false
+    });
     game.settings.register("scene-plus", "sceneTokenFocus", {
         name: "Focus Token",
-        hint: "Focus on my token after restored or teleported.\nNote: May not work on all scenes!",
+        hint: "Focus on my token after returned or teleported to a scene.\nNote: Only works on savable scenes configured by the GM!",
         scope: "client",
         config: true,
         type: Boolean,
@@ -36,7 +52,7 @@ Hooks.once('init', async function() {
     restorePlayerToScene: async (userid) => {
             socket.executeAsGM("restorePlayerToScene", userid);
         }
-    }
+    };
     return;
 });
 
@@ -61,11 +77,15 @@ Hooks.on('canvasReady', async function() {
         }
         focusOnToken(token);
         game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
-    } else if (saveScene) {
+    } else if (saveScene || game.settings.get("scene-plus", "saveAllScenes")) {
         if (token) focusOnToken(token);
         game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
     }
     return;
+});
+
+Hooks.on('userConnected', async function(user, connected) {
+    if (connected && game.settings.get("scene-plus", "autoReturnUser")) socket.executeAsGM("restorePlayerToScene", user.id);
 });
 
 function focusOnToken(token) {
