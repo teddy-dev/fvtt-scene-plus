@@ -13,17 +13,19 @@ When players are allowed to move independently between scenes, Foundry doesn't t
 Should work with all game systems...probably.
 
 ### How it works
-1. Create a tile on a scene and with Tagger, add the tag `Spawner` or `SaveScene` (this can be changed in settings)
+1. Create a tile on a scene and with Tagger, add the tag `Spawner` or `SaveScene` (these can be changed in settings!)
 - `Spawner` will create a new token if a character's token does not already exist in this scene and save the scene to the character. Use this when you have something like MATT simply changing the scene.
 - `SaveScene` will only save the scene to the character. Use this when you are using Foundry's Scene Regions to teleport the player to another scene.
+- You may also enable the "Save all Scenes" setting to default to save every scene a player loads onto.
 2. When a player loads on this scene, the module will save the scene to their **active character**.
 3. The following client macro can be used to restore the user to their last scene. (Be sure to give your players `Observer` permissions!)
   
    ```JavaScript
      window.scenePlus.restorePlayerToScene(game.user.id);
    ```
+   Optionally, the client setting "Automatically Return to Scene" can be enabled to return the client when they login.
 
-You will still need to setup transitioning players/tokens between your scenes. You can do this with [Foundry's Scene Regions](https://foundryvtt.com/article/scene-regions), [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
+This module only handles the tracking and the returning a player to a scene. You still need to setup transitioning players/tokens between your scenes. You can do this with [Foundry's Scene Regions](https://foundryvtt.com/article/scene-regions), [Monk's Active Tiles](https://foundryvtt.com/packages/monks-active-tiles), or [Stairways (Teleporter)](https://foundryvtt.com/packages/stairways).
 
 ---
 
