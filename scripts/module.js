@@ -4,6 +4,7 @@ let socket;
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule("scene-plus");
     socket.register("restorePlayerToScene", restorePlayerToScene);
+    return;
 });
 
 Hooks.once('init', async function() {
@@ -39,11 +40,6 @@ Hooks.once('init', async function() {
     return;
 });
 
-function restorePlayerToScene(userid) {
-    const user = game.users.get(userid);
-    game.socket.emit("pullToScene", user.character.getFlag("scene-plus", "lastScene"), user.id);
-}
-
 Hooks.once('ready', async function() {
     scenePlusSpawnerReady = true;
     return;
@@ -54,8 +50,8 @@ Hooks.on('canvasReady', async function() {
     const spawner = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSpawnerTag"))[0];
     const saveScene = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSaveTag"))[0];
     const character = game.user.character.name;
-        const all = await canvas.tokens;
-        const token = await all.objects.children.find(c => c.document.name === character);
+    const all = await canvas.tokens;
+    const token = await all.objects.children.find(c => c.document.name === character);
     if (spawner) {
         if (!token) {
             const portal = new Portal();
@@ -73,7 +69,12 @@ Hooks.on('canvasReady', async function() {
 });
 
 function focusOnToken(token) {
-    if (game.settings.get("scene-plus", "sceneTokenFocus")) {
-        canvas.animatePan({ x: token.center.x, y: token.center.y, scale: canvas.stage.scale.x });
-    }
+    if (game.settings.get("scene-plus", "sceneTokenFocus")) canvas.animatePan({ x: token.center.x, y: token.center.y, scale: canvas.stage.scale.x });
+    return;
+}
+
+function restorePlayerToScene(userid) {
+    const user = game.users.get(userid);
+    game.socket.emit("pullToScene", user.character.getFlag("scene-plus", "lastScene"), user.id);
+    return;
 }
