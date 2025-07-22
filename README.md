@@ -1,7 +1,7 @@
 # Scene+ for FoundryVTT
-A fairly simple module used to keep track of player movement through self-navigating scenes.
+A simple module used to keep track of player movement through self-navigating scenes.
 
-When you have multiple scenes that are designed so your players can freely move themselves between them, such as multistory maps, teleporters, or regional maps it can be a challenge for the player to return to the scene they were on after a reload or another play session. This module solves that challenge by tracking the scene a character has loaded into and exposing a Macro-usable function to return a player to that scene.
+When players are allowed to move independently between scenes, Foundry doesn't track that movement, so players won't be able to return to their last active scene upon reload or between sessions. This is a common problem for campaigns that use multistory maps, teleporters, or regional maps. This module tracks scenes for characters and creates a macro-usable function to easily return a player to their last active scene.
 
 ### Required Plugins 
 [Tagger](https://foundryvtt.com/packages/tagger)  
