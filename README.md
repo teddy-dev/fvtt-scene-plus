@@ -10,7 +10,7 @@ When players are allowed to move independently between scenes, Foundry doesn't t
 
 ## Usage
 1. Create a tile on a scene and use Tagger to add either the `Spawner` or `SaveScene` tag (both can be modified in settings).
-- The `Spawner` tag will create a new token if a character's token doesn't exist in the scene and save the scene to the character. Use this when you have a situation like MATT simply changing the scene.
+- The `Spawner` tag will create a new token if a character's token doesn't exist in the scene and save the scene to the character. Use this when you have a setup like MATT simply changing the scene.
 - The `SaveScene` tag will only save the scene to the character. Use this option when you're using Foundry's Scene Regions to teleport a player to another scene.
 - You may also enable the "Save all Scenes" setting to automatically save every scene a player loads onto.
 2. When a player enters this scene, the module will save the scene information to their active character.
