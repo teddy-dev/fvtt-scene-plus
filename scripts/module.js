@@ -4,6 +4,8 @@ let socket;
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule("scene-plus");
     socket.register("restorePlayerToScene", restorePlayerToScene);
+    socket.register("panToSpot", panToSpot);
+    socket.register("spawnCharacter", spawnCharacter);
     return;
 });
 
@@ -65,36 +67,63 @@ Hooks.on('canvasReady', async function() {
     if (!scenePlusSpawnerReady) return;
     const spawner = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSpawnerTag"))[0];
     const saveScene = await Tagger.getByTag(game.settings.get("scene-plus", "sceneSaveTag"))[0];
+    
+    if (!game.user.character) return;
+
     const character = game.user.character.name;
     const all = await canvas.tokens;
-    const token = await all.objects.children.find(c => c.document.name === character);
-    if (spawner) {
-        if (!token) {
-            const portal = new Portal();
-            portal.addCreature(character, { count: 1 });
-            portal.setLocation({ x: spawner.x, y: spawner.y });
-            await portal.spawn();
-        }
-        focusOnToken(token);
-        game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
+    const tokens = await game.scenes.get(game.user.viewedScene).tokens.filter(token => token.actor && token.actor.name === character);
+
+    if (spawner && tokens.length === 0) {
+        socket.executeAsGM("spawnCharacter", character, spawner, game.user.id, game.user.character.getFlag("scene-plus", "lastScene"));
     } else if (saveScene || game.settings.get("scene-plus", "saveAllScenes")) {
-        if (token) focusOnToken(token);
-        game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
+        if (!canvas.scene.active) {
+            game.user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
+            game.user.character.setFlag("scene-plus", "lastLevel", game.user.viewedLevel);
+        }
     }
     return;
 });
 
 Hooks.on('userConnected', async function(user, connected) {
     if (connected && game.settings.get("scene-plus", "autoReturnUser")) socket.executeAsGM("restorePlayerToScene", user.id);
+    return;
 });
 
-function focusOnToken(token) {
-    if (game.settings.get("scene-plus", "sceneTokenFocus")) canvas.animatePan({ x: token.center.x, y: token.center.y, scale: canvas.stage.scale.x });
+async function panToSpot(x, y) {
+    await canvas.animatePan({ x: Math.round(x), y: Math.round(y), scale: canvas.stage.scale.x });
     return;
 }
 
-function restorePlayerToScene(userid) {
+function restorePlayerToScene(userid, spawner) {
     const user = game.users.get(userid);
-    game.socket.emit("pullToScene", user.character.getFlag("scene-plus", "lastScene"), user.id);
+    game.socket.emit("pullToScene", user.character.getFlag("scene-plus", "lastScene"), user.id, { level: user.character.getFlag("scene-plus", "lastLevel") || 0 });
+    return;
+}
+
+async function spawnCharacter(character, spawner, userid, sceneId) {
+    const tokens = await game.scenes.get(game.user.viewedScene).tokens.filter(token => token.actor && token.actor.name === character);
+
+    if (tokens.length === 0) {
+        const actor = await game.actors.find(actor => actor.name === character);
+
+        if (!actor) return;
+
+        const prototypeToken = await actor.getTokenDocument();
+        const rX = (spawner.x + (Math.random() * spawner.width-(canvas.grid.size/2))).toNearest(canvas.grid.size);
+        const rY = (spawner.y + (Math.random() * spawner.height-(canvas.grid.size/2))).toNearest(canvas.grid.size);
+
+        const token = await game.scenes.get(sceneId).createEmbeddedDocuments("Token", [{
+            ...prototypeToken.toObject(),
+            x: Math.round(rX),
+            y: Math.round(rY)
+        }]);
+
+        socket.executeAsUser("panToSpot", userid, rX, rY);
+
+        const user = game.users.get(userid);
+        user.character.setFlag("scene-plus", "lastScene", canvas.scene.id);
+        user.character.setFlag("scene-plus", "lastLevel", game.user.viewedLevel);
+    }
     return;
 }
